@@ -1,4 +1,4 @@
-function Interface(method_variable) {
+function jsInterface(method_variable) {
   var methods;
   switch(Object.prototype.toString.call(method_variable).slice(8, -1)) {
     case 'Array' : methods = method_variable; break;
@@ -14,7 +14,7 @@ function Interface(method_variable) {
   
   return Interface;
 };
-Interface.implements = function(parentInterface_variants,implementation) {
+jsInterface.implements = function(parentInterface_variants,implementation) {
   if (!parentInterface_variants) throw new Error(`parentInterface is not defined`);
   if (!implementation) throw new Error(`implementation is not defined`);
   var parentInterface;
@@ -34,7 +34,7 @@ Interface.implements = function(parentInterface_variants,implementation) {
   Interface.__proto__ = this.prototype;
   return Interface;
 };
-Interface.define = function(context,name,newInterface_variable) {
+jsInterface.define = function(context,name,newInterface_variable) {
   var interface_example;
   switch(Object.prototype.toString.call(newInterface_variable).slice(8, -1)) {
     case 'Object' : interface_example = newInterface_variable; break;
@@ -52,7 +52,7 @@ Interface.define = function(context,name,newInterface_variable) {
       for (let method in this[name]) {
         if (!value[method]) throw new Error(`method ${method} is not found in implementation`);
       }
-      Interface.define(this,name,value);
+      jsInterface.define(this,name,value);
     }
   });
 };
