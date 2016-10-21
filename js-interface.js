@@ -1,8 +1,5 @@
-function typeOfObject(obj) {
-  return Object.prototype.toString.call(obj).slice(8, -1)
-}
 function jsInterface(method_variable) {
-  var methods;
+  let methods;
   switch(typeOfObject(method_variable)) {
     case 'Array' : methods = method_variable; break;
     case 'String' : methods = [method_variable]; break;
@@ -12,18 +9,14 @@ function jsInterface(method_variable) {
     for (let i of methods) {
       this[i] = function(){ throw new Error(`${i} is not implemented in interface`) };
     }
-  };
-  Interface.__proto__ = jsInterface.prototype;
-  
+  };  
   return Interface;
 };
-jsInterface.implements = function(parentInterface_variants,implementation) {
-  if (!parentInterface_variants) throw new Error(`parentInterface is not defined`);
-  if (!implementation) throw new Error(`implementation is not defined`);
-  var parentInterface;
-  switch(typeOfObject(parentInterface_variants)) {
-    case 'Array' : parentInterface = Object.assign.apply([],parentInterface_variants); break;
-    case 'Function' : parentInterface = parentInterface_variants; break;
+jsInterface.implements = function(interfaceOrArrayOfInterfaces,implementation) {
+  let parentInterface;
+  switch(typeOfObject(interfaceOrArrayOfInterfaces)) {
+    case 'Array' : parentInterface = Object.assign.apply([],interfaceOrArrayOfInterfaces); break;
+    case 'Function' : parentInterface = interfaceOrArrayOfInterfaces; break;
     default: throw new Error('parentInterface_variants must be an Array or Constructor');
   }
   function Implementation(){
@@ -34,7 +27,6 @@ jsInterface.implements = function(parentInterface_variants,implementation) {
       this[method] = implementation[method];
     };
   };
-  Implementation.__proto__ = this.prototype;
   return Implementation;
 };
 jsInterface.define = function(context,name,newInterface_variable) {
@@ -50,8 +42,7 @@ jsInterface.define = function(context,name,newInterface_variable) {
   Object.defineProperty(context,name,{
     configurable: true,
     get: function(){return interface_example;},
-    set: function(value){0
-      if (typeOfObject(value) !== 'Object') throw new Error('Interface implementation exemple expected')
+    set: function(value){
       for (let method in interface_example[name]) {
         if (!value[method]) throw new Error(`method ${method} is not found in implementation`);
       }
@@ -59,3 +50,7 @@ jsInterface.define = function(context,name,newInterface_variable) {
     }
   });
 };
+
+function typeOfObject(obj) {
+  return Object.prototype.toString.call(obj).slice(8, -1)
+}
