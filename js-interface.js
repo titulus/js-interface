@@ -20,12 +20,15 @@ function jsInterface(input) {
             defaultImplementation = input;
             interfaceProperties = Object_keysWithInherited(defaultImplementation);
             break;
-        default: throw new Error('jsInterface accept only String, Array, Function or Object.');
+        default:
+            throw new Error('jsInterface accept only String, Array, Function or Object.');
     };
     function createObjectOfErrors(methodList) {
         const obj = {};
         for (let i of methodList) {
-            obj[i] = function(){ throw new Error(`${i} is not implemented in interface`) };
+            obj[i] = function(){
+                throw new Error(`Method ${i} is not implemented in interface`);
+            };
         };
         return obj;
     };
@@ -41,7 +44,8 @@ function jsInterface(input) {
         jsInterface_connect(context,name,defaultImplementation);
     };
     function jsInterface_connect(context,name,implementation) {
-        if (typeOfObject(implementation) !== 'Object') throw new Error('You should connect Object');
+        if (typeOfObject(implementation) !== 'Object')
+            throw new Error('You should connect Object');
         const wrappedImplementation = wrapWithContext(context,implementation);
         jsInterface_defineProperty(context,name,wrappedImplementation);
     };
@@ -49,8 +53,9 @@ function jsInterface(input) {
         const wrappedImplementation = {};
         for (let i of interfaceProperties) {
             wrappedImplementation[i] = function() {
-                if (typeof implementation[i] === 'undefined') throw new Error(`Method ${i} is not found in implementation`);
-                implementation[i].apply(context,...arguments);
+                if (typeof implementation[i] === 'undefined')
+                    throw new Error(`Method ${i} is not found in implementation`);
+                return implementation[i].apply(context,arguments);
             };
         };
         return wrappedImplementation;
