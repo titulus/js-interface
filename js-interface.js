@@ -41,9 +41,9 @@ function jsInterface(input) {
     };
     
     function jsInterface_define(context,name) {
-        jsInterface_connect(context,name,defaultImplementation);
+        jsInterface_assign(context,name,defaultImplementation);
     };
-    function jsInterface_connect(context,name,implementation) {
+    function jsInterface_assign(context,name,implementation) {
         if (typeOfObject(implementation) !== 'Object')
             throw new Error('You should connect Object');
         const wrappedImplementation = wrapWithContext(context,implementation);
@@ -65,7 +65,7 @@ function jsInterface(input) {
             configurable: true,
             get: function(){return implementation;},
             set: function(value){
-                jsInterface_connect(this,name,value);
+                jsInterface_assign(this,name,value);
             }
         });
     }
