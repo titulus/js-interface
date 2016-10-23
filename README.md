@@ -7,7 +7,7 @@ OOP interface implementation
 + **Implementation** - entity, provides functional for attributes declared by Interface.
 
 ## Main ideas
-1. *To be convinient with **Duck typing*** - check attribute existance only when called, and not when Interface or Implementation created / defined.
+1. *To be convinient with Duck typing* - check attribute existance only when called, and not when Interface or Implementation created / defined.
 1. Bind context of attributes to Interface maintainer - Object with property contained Interface.
 
 ## Base example
