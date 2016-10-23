@@ -3,6 +3,8 @@
 function jsInterface(input) {
     let initialImplementation;
     let interfaceProperties;
+    let maintainer;
+    let propertyContainerName;
     switch(classOf(input)) {
         case 'String' :
             interfaceProperties = [input];
@@ -41,32 +43,32 @@ function jsInterface(input) {
     };
     
     function jsInterface_define(context,name) {
-        jsInterface_assign(context,name,initialImplementation);
+        maintainer = context;
+        propertyContainerName = name;
+        jsInterface_assign(initialImplementation);
     };
-    function jsInterface_assign(context,name,implementation) {
+    function jsInterface_assign(implementation) {
         if (classOf(implementation) !== 'Object')
             throw new TypeError('You should assign Object to property containing Interface');
-        const wrappedImplementation = wrapWithContext(context,implementation);
-        jsInterface_defineProperty(context,name,wrappedImplementation);
+        const wrappedImplementation = wrapWithContext(implementation);
+        jsInterface_defineProperty(wrappedImplementation);
     };
-    function wrapWithContext(context,implementation) {
+    function wrapWithContext(implementation) {
         const wrappedImplementation = {};
         for (let i of interfaceProperties) {
             wrappedImplementation[i] = function() {
                 if (typeof implementation[i] === 'undefined')
                     throw new ReferenceError(`Method '${i}' is not found in implementation`);
-                return implementation[i].apply(context,arguments);
+                return implementation[i].apply(maintainer,arguments);
             };
         };
         return wrappedImplementation;
     };
-    function jsInterface_defineProperty(context,name,implementation) {
-        Object.defineProperty(context,name,{
+    function jsInterface_defineProperty(implementation) {
+        Object.defineProperty(maintainer,propertyContainerName,{
             configurable: true,
             get: function(){return implementation;},
-            set: function(value){
-                jsInterface_assign(this,name,value);
-            }
+            set: jsInterface_assign
         });
     }
 
