@@ -1,33 +1,33 @@
 'use strict';
 
 function jsInterface(input) {
-    let defaultImplementation;
+    let initialImplementation;
     let interfaceProperties;
-    switch(typeOfObject(input)) {
+    switch(classOf(input)) {
         case 'String' :
             interfaceProperties = [input];
-            defaultImplementation = createObjectOfErrors(interfaceProperties);
+            initialImplementation = createObjectOfErrors(interfaceProperties);
             break;
         case 'Array' :
             interfaceProperties = input.slice();
-            defaultImplementation = createObjectOfErrors(interfaceProperties);
+            initialImplementation = createObjectOfErrors(interfaceProperties);
             break;
         case 'Function' :
-            defaultImplementation = new input();
-            interfaceProperties = Object_keysWithInherited(defaultImplementation);
+            initialImplementation = new input();
+            interfaceProperties = Object_keysWithInherited(initialImplementation);
             break;
         case 'Object' :
-            defaultImplementation = input;
-            interfaceProperties = Object_keysWithInherited(defaultImplementation);
+            initialImplementation = input;
+            interfaceProperties = Object_keysWithInherited(initialImplementation);
             break;
         default:
-            throw new Error('jsInterface accept only String, Array, Function or Object.');
+            throw new TypeError('jsInterface accept only String, Array, Function or Object.');
     };
     function createObjectOfErrors(methodList) {
         const obj = {};
         for (let i of methodList) {
             obj[i] = function(){
-                throw new Error(`Method ${i} is not implemented in interface`);
+                throw new ReferenceError(`Implementation with method '${i}' is not assigned`);
             };
         };
         return obj;
@@ -41,11 +41,11 @@ function jsInterface(input) {
     };
     
     function jsInterface_define(context,name) {
-        jsInterface_assign(context,name,defaultImplementation);
+        jsInterface_assign(context,name,initialImplementation);
     };
     function jsInterface_assign(context,name,implementation) {
-        if (typeOfObject(implementation) !== 'Object')
-            throw new Error('You should connect Object');
+        if (classOf(implementation) !== 'Object')
+            throw new TypeError('You should assign Object to property containing Interface');
         const wrappedImplementation = wrapWithContext(context,implementation);
         jsInterface_defineProperty(context,name,wrappedImplementation);
     };
@@ -54,7 +54,7 @@ function jsInterface(input) {
         for (let i of interfaceProperties) {
             wrappedImplementation[i] = function() {
                 if (typeof implementation[i] === 'undefined')
-                    throw new Error(`Method ${i} is not found in implementation`);
+                    throw new ReferenceError(`Method ${i} is not found in implementation`);
                 return implementation[i].apply(context,arguments);
             };
         };
@@ -77,8 +77,8 @@ function jsInterface(input) {
 };
 
 
-function typeOfObject(obj) {
-    return Object.prototype.toString.call(obj).slice(8, -1)
+function classOf(variable) {
+    return Object.prototype.toString.call(variable).slice(8, -1)
 };
 
 module.exports = jsInterface;

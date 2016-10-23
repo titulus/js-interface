@@ -17,8 +17,8 @@ describe('new jsInterface(..) has `.define()` property. Can be created with 1 ar
         assert.ok( (new jsInterface(function(){this.someProperty = function(){}})).hasOwnProperty('define') );
     });
     it('Other: throw Error',()=>{
-        assert.throws(()=>{ new jsInterface() },Error);
-        assert.throws(()=>{ new jsInterface(1) },Error);
+        assert.throws(()=>{ new jsInterface() },TypeError);
+        assert.throws(()=>{ new jsInterface(1) },TypeError);
     });
 });
 const speakEnglishConstructor = function(){
@@ -77,7 +77,7 @@ describe('Interface created with properties',()=>{
             assert.equal(Duck.speak.say('hello'),'Donald says: hello');
         });
         it('should throw Error when calling method if implementation is not assigned',()=>{
-            assert.throws(()=>{ Duck.speak.say('hello') });
+            assert.throws(()=>{ Duck.speak.say('hello') },ReferenceError);
         });
         it('should call implementation (as constructed Object) method with defined context',()=>{
             Duck.speak = new speakRussian();
@@ -92,7 +92,7 @@ describe('Interface created with properties',()=>{
         });
         it('should have declared property throwing error when calling property which implementation don\'t has',()=>{
             Duck.speak = quacking;
-            assert.throws(()=>{ Duck.speak.say('hello') },Error);
+            assert.throws(()=>{ Duck.speak.say('hello') },ReferenceError);
         });
         it('should not have extra properties from implementation',()=>{
             Duck.speak = quacking;
@@ -137,7 +137,7 @@ describe('Interface created with default implementation',()=>{
         });
         it('should have declared property throwing error when calling property which implementation don\'t has',()=>{
             Duck.speak = quacking;
-            assert.throws(()=>{ Duck.speak.say('hello') },Error);
+            assert.throws(()=>{ Duck.speak.say('hello') },ReferenceError);
         });
         it('should not have extra properties from implementation',()=>{
             Duck.speak = quacking;
