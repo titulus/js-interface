@@ -1,7 +1,7 @@
 {
   "name": "js-interface",
-  "version": "0.2.0",
-  "description": "Java inspired Interfaces",
+  "version": "0.3.1",
+  "description": "OOP interface implementation",
   "main": "js-interface.js",
   "scripts": {
     "test": "mocha -R spec ./tests"
