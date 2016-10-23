@@ -52,9 +52,15 @@ describe('Interface created with properties',()=>{
         testcase('say');
     });
     describe('as Array',()=>{
+        it('+ should have methods for whole poperties list',()=>{
+            const Duck = {name:'Donald'};
+            const Speaking = new jsInterface(['say','greet']);
+            Speaking.define(Duck,'speak');
+            assert.ok(Duck.speak['say']);
+            assert.ok(Duck.speak['greet']);
+        });
         testcase(['say','greet']);
-
-        it('+should use common behavior whith presented methods, even if implementation is not strict',()=>{
+        it('+ should use common behavior whith presented methods, even if implementation is not strict',()=>{
             const Duck = {name:'Donald'};
             const Speaking = new jsInterface(['say','greet']);
             Speaking.define(Duck,'speak');

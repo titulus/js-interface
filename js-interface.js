@@ -54,7 +54,7 @@ function jsInterface(input) {
         for (let i of interfaceProperties) {
             wrappedImplementation[i] = function() {
                 if (typeof implementation[i] === 'undefined')
-                    throw new ReferenceError(`Method ${i} is not found in implementation`);
+                    throw new ReferenceError(`Method '${i}' is not found in implementation`);
                 return implementation[i].apply(context,arguments);
             };
         };
