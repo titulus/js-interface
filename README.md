@@ -102,7 +102,7 @@ const jsInterface = require('js-interface');
     in both of this examples `Duck.speak` - will contain *Interface*;
 3. Pointing the Implementation
     
-    Implementation must be an object.
+    Implementation must be an object or Constructor.
 
     To point the implementation for interface - assign it:
     ```js

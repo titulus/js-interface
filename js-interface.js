@@ -47,9 +47,18 @@ function jsInterface(input) {
         propertyContainerName = name;
         jsInterface_assign(initialImplementation);
     };
-    function jsInterface_assign(implementation) {
-        if (classOf(implementation) !== 'Object')
-            throw new TypeError('You should assign Object to property containing Interface');
+    function jsInterface_assign(input) {
+        let implementation;
+        switch(classOf(input)) {
+            case 'Function' :
+                implementation = new input();
+                break;
+            case 'Object' :
+                implementation = input;
+                break;
+            default:
+                throw new TypeError('You should assign Object or Constructor to property containing Interface');
+        };
         const wrappedImplementation = wrapWithContext(implementation);
         jsInterface_defineProperty(wrappedImplementation);
     };

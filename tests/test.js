@@ -82,12 +82,12 @@ describe('Interface created with properties',()=>{
             Duck.speak = speakEnglish;
             assert.equal(Duck.speak.say('hello'),'Donald says: hello');
         });
+        it('should provide the same behavior with Constructor given as implementation',()=>{
+            Duck.speak = speakEnglishConstructor;
+            assert.equal(Duck.speak.say('hello'),'Donald says: hello');
+        });
         it('should throw Error when calling method if implementation is not assigned',()=>{
             assert.throws(()=>{ Duck.speak.say('hello') },ReferenceError);
-        });
-        it('should call implementation (as constructed Object) method with defined context',()=>{
-            Duck.speak = new speakRussian();
-            assert.equal(Duck.speak.say('привет'),'Donald говорит: привет');
         });
         it('should change implementation by assignment',()=>{
             Duck.speak = speakEnglish;
