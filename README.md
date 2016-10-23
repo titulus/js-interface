@@ -34,8 +34,8 @@ const speakRussian = { // another Implementation with extra attribute
 };
 Duck.speak = speakRussian; // changing Implementation
 Duck.speak.say('hello'); // -> Donald говорит: hello
-Duck.speak.greet(); // TypeError because Duck.speak.greet is undefined
-Duck.speak.bye() // ReferenceError because Duck.speak.bye is not found in (new speakRussian)
+Duck.speak.greet(); // TypeError because Duck.speak.greet is undefined (not declared in Speaking)
+Duck.speak.bye() // ReferenceError because Duck.speak.bye is not found in speakRussian
 ```
 
 ## Install
