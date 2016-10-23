@@ -36,6 +36,14 @@ Duck.speak = speakRussian; // changing Implementation
 Duck.speak.say('hello'); // -> Donald говорит: hello
 Duck.speak.greet(); // TypeError because Duck.speak.greet is undefined (not declared in Speaking)
 Duck.speak.bye() // ReferenceError because Duck.speak.bye is not found in speakRussian
+
+const Govor = new jsInterface(speakingRussian); // creating Interface with default implementation
+                                                // Interface requires .say and .greet attributes (based on speakRussian attributes list)
+const Utka = {name:'Геннадий'};
+Govor.define(Utka,'speak');
+Utka.speak.say('привет'); // -> Геннадий говорит: привет
+                          // It not thows RefferenceError because default implementation is defined
+Utka.speak.greet(); // ->  Геннадий здоровается
 ```
 
 ## Install
