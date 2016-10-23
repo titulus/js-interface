@@ -14,7 +14,7 @@ OOP interface implementation
 ```js
 const Speaking = new jsInterface(['say','bye']); // create Interface requires .say and .greet attributes from implementations
 const speakEnglish = { // Implementation with .say(msg) method
-    say : function(msg) {
+    say: function(msg) {
         return `${this.name} says: ${msg}`;
     }
 };
@@ -24,15 +24,15 @@ Duck.speak.say('hello'); // ReferenceError because Interface has no Implementati
 Duck.speak = speakEnglish; // pointing Implementation for Interface
 Duck.speak.say('hello'); // -> Donald says: hello
 
-const speakRussian = function(){ // Constructor for another Implementation with extra attribute
-    this.say = function(msg) {
+const speakRussian = { // another Implementation with extra attribute
+    say: function(msg) {
         return `${this.name} говорит: ${msg}`;
-    };
-    this.greet = function() {
+    }
+    ,greet: function() {
         return `${this.name} здоровается`
-    };
+    }
 };
-Duck.speak = new speakRussian(); // changing Implementation
+Duck.speak = speakRussian; // changing Implementation
 Duck.speak.say('hello'); // -> Donald говорит: hello
 Duck.speak.greet(); // TypeError because Duck.speak.greet is undefined
 Duck.speak.bye() // ReferenceError because Duck.speak.bye is not found in (new speakRussian)
