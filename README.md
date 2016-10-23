@@ -25,13 +25,22 @@ Duck.speak.say('hello'); // ReferenceError because Interface has no Implementati
 Duck.speak = speakEnglish; // pointing Implementation for Interface
 Duck.speak.say('hello'); // -> Donald says: hello
 
-const speakRussian = { // another Implementation with extra attribute
+const speakRussian = { 
     say: function(msg) {
         return `${this.name} говорит: ${msg}`;
     }
     ,greet: function() {
         return `${this.name} здоровается`
     }
+};
+const speakRussian = function(){ // another Implementation with extra attribute
+                                 // it created as Constructor for this time
+    this.say = function(msg) {
+        return `${this.name} говорит: ${msg}`;
+    };
+    this.greet = function(){
+        return `${this.name} здоровается!`;
+    };
 };
 Duck.speak = speakRussian; // changing Implementation
 Duck.speak.say('hello'); // -> Donald говорит: hello
