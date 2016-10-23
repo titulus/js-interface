@@ -10,9 +10,10 @@ OOP interface implementation
 1. *To be convinient with **Duck typing*** - check attribute existance only when called, and not when Interface or Implementation created / defined.
 1. Bind context of attributes to Interface maintainer - Object with property contained Interface.
 
-## Quick intro
+## Base example
 ```js
-const Speaking = new jsInterface(['say','bye']); // create Interface requires .say and .greet attributes from implementations
+const Speaking = new jsInterface(['say','bye']); // create Interface
+                                                 // requires .say and .greet attributes
 const speakEnglish = { // Implementation with .say(msg) method
     say: function(msg) {
         return `${this.name} says: ${msg}`;
@@ -38,7 +39,7 @@ Duck.speak.greet(); // TypeError because Duck.speak.greet is undefined (not decl
 Duck.speak.bye() // ReferenceError because Duck.speak.bye is not found in speakRussian
 
 const Govor = new jsInterface(speakingRussian); // creating Interface with default implementation
-                                                // Interface requires .say and .greet attributes (based on speakRussian attributes list)
+                                                // Interface requires .say and .greet attributes
 const Utka = {name:'Геннадий'};
 Govor.define(Utka,'speak');
 Utka.speak.say('привет'); // -> Геннадий говорит: привет
