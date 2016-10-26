@@ -41,12 +41,13 @@ function jsInterface(input) {
         };
         return keys;
     };
-    
-    function jsInterface_define(context,name) {
+
+    return function Interface(context,name){
         maintainer = context;
         propertyContainerName = name;
         jsInterface_assign(initialImplementation);
     };
+    
     function jsInterface_assign(input) {
         let implementation;
         switch(classOf(input)) {
@@ -79,12 +80,7 @@ function jsInterface(input) {
             get: function(){return implementation;},
             set: jsInterface_assign
         });
-    }
-
-    function Interface(){
-        this.define = jsInterface_define;
     };
-    return new Interface;
 };
 
 

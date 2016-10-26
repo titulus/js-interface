@@ -3,24 +3,6 @@
 const assert = require('assert');
 const jsInterface = require('../')
 
-describe('new jsInterface(..) has `.define()` property. Can be created with 1 argument:',()=>{
-    it('String: 1 only property, without default implementation',()=>{
-        assert.ok( (new jsInterface('some property')).hasOwnProperty('define') );
-    });
-    it('Array: List of properties, without default implementation',()=>{
-        assert.ok( (new jsInterface(['set','of','properties'])).hasOwnProperty('define') );
-    });
-    it('Object: default implementation',()=>{
-        assert.ok( (new jsInterface({'some property':function(){}})).hasOwnProperty('define') );
-    });
-    it('Function: constructor of default implementation',()=>{
-        assert.ok( (new jsInterface(function(){this.someProperty = function(){}})).hasOwnProperty('define') );
-    });
-    it('Other: throw Error',()=>{
-        assert.throws(()=>{ new jsInterface() },TypeError);
-        assert.throws(()=>{ new jsInterface(1) },TypeError);
-    });
-});
 const speakEnglishConstructor = function(){
     this.say = function(msg){
         return `${this.name} says: ${msg}`;
@@ -30,7 +12,7 @@ const speakEnglishConstructor = function(){
     }
 }
 const speakEnglish = Object.assign({},new speakEnglishConstructor());
-const speakRussian = function(){
+const speakRussianConstructor = function(){
     this.say = function(msg) {
         return `${this.name} говорит: ${msg}`;
     };
@@ -55,7 +37,7 @@ describe('Interface created with properties',()=>{
         it('+ should have methods for whole poperties list',()=>{
             const Duck = {name:'Donald'};
             const Speaking = new jsInterface(['say','greet']);
-            Speaking.define(Duck,'speak');
+            Speaking(Duck,'speak');
             assert.ok(Duck.speak['say']);
             assert.ok(Duck.speak['greet']);
         });
@@ -63,7 +45,7 @@ describe('Interface created with properties',()=>{
         it('+ should use common behavior whith presented methods, even if implementation is not strict',()=>{
             const Duck = {name:'Donald'};
             const Speaking = new jsInterface(['say','greet']);
-            Speaking.define(Duck,'speak');
+            Speaking(Duck,'speak');
             Duck.speak = quacking;
             assert.equal(Duck.speak.greet(),'Donald quack, quack');
         });
@@ -75,7 +57,7 @@ describe('Interface created with properties',()=>{
 
         beforeEach(()=>{
             Duck = {name:'Donald'};
-            Speaking.define(Duck,'speak');
+            Speaking(Duck,'speak');
         })
         
         it('should call implementation (as simple Object) method with defined context',()=>{
@@ -93,7 +75,7 @@ describe('Interface created with properties',()=>{
             Duck.speak = speakEnglish;
             assert.equal(Duck.speak.say('hello'),'Donald says: hello');
 
-            Duck.speak = new speakRussian();
+            Duck.speak = new speakRussianConstructor();
             assert.equal(Duck.speak.say('привет'),'Donald говорит: привет');
         });
         it('should have declared property throwing error when calling property which implementation don\'t has',()=>{
@@ -122,7 +104,7 @@ describe('Interface created with default implementation',()=>{
 
         beforeEach(()=>{
             Duck = {name:'Donald'};
-            Speaking.define(Duck,'speak');
+            Speaking(Duck,'speak');
         })
         
         it('should not throw Error when calling method if non-default implementation is not assigned',()=>{
@@ -132,13 +114,13 @@ describe('Interface created with default implementation',()=>{
             assert.equal(Duck.speak.say('hello'),'Donald says: hello');
         });
         it('should call implementation (as constructed Object) methods with defined context',()=>{
-            Duck.speak = new speakRussian();
+            Duck.speak = new speakRussianConstructor();
             assert.equal(Duck.speak.say('привет'),'Donald говорит: привет');
         });
         it('should change implementation by assignment',()=>{
             assert.equal(Duck.speak.say('hello'),'Donald says: hello');
 
-            Duck.speak = new speakRussian();
+            Duck.speak = new speakRussianConstructor();
             assert.equal(Duck.speak.say('привет'),'Donald говорит: привет');
         });
         it('should have declared property throwing error when calling property which implementation don\'t has',()=>{
