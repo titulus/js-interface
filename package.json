@@ -1,6 +1,6 @@
 {
   "name": "js-interface",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "OOP interface implementation",
   "main": "js-interface.js",
   "scripts": {

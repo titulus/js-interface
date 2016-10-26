@@ -20,7 +20,7 @@ const speakEnglish = { // Implementation with .say(msg) method
     }
 };
 const Duck = {name:'Donald'}; // Object which will be maintainer for our Interface
-Speaking.define(Duck,'speak'); // Duck.speak - property contained Interface
+Speaking(Duck,'speak'); // Duck.speak - property contained Interface
 Duck.speak.say('hello'); // ReferenceError because Interface has no Implementation yet
 Duck.speak = speakEnglish; // pointing Implementation for Interface
 Duck.speak.say('hello'); // -> Donald says: hello
@@ -50,7 +50,7 @@ Duck.speak.bye() // ReferenceError because Duck.speak.bye is not found in speakR
 const Govor = new jsInterface(speakingRussian); // creating Interface with default implementation
                                                 // Interface requires .say and .greet attributes
 const Utka = {name:'Геннадий'};
-Govor.define(Utka,'speak');
+Govor(Utka,'speak');
 Utka.speak.say('привет'); // -> Геннадий говорит: привет
                           // It not thows RefferenceError because default implementation is defined
 Utka.speak.greet(); // ->  Геннадий здоровается
@@ -97,13 +97,13 @@ const jsInterface = require('js-interface');
     You can define the property of simple object
     ```js
     const Duck = {};
-    Speaking.define(Duck,'speak');
+    Speaking(Duck,'speak');
     ```
     or `this` in constructor
     ```js
     class Bird {
         constructor() {
-            Speaking.define(this,'speak');
+            Speaking(this,'speak');
         }
     };
     const Duck = new Bird();
