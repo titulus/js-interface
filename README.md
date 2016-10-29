@@ -54,13 +54,13 @@ const jsInterface = require('js-interface');
 ## Usage
 1. Creating new jsInterface 
 
-    You can define one or list of methods:
+    You can declare one or list of methods:
     ```js
     const Speaking = new jsInterface('say');
     const Speaking = new jsInterface(['say','greet']);
     ```
 
-    Or define default implementation:
+    Or define default Implementation - all of it's methods will be declared in Interface:
     ```js
     const Speaking = new jsInterface({ // as simple Object
         say : function(msg) {
